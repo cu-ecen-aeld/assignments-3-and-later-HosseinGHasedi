@@ -37,7 +37,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     apt-get update &&  \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
     --no-install-recommends \
-    ruby cmake git build-essential bsdmainutils valgrind sudo wget
+    ruby cmake git build-essential bsdmainutils valgrind wget
 
     apt-get install -y --no-install-recommends \
         bc u-boot-tools kmod cpio flex bison libssl-dev psmisc
