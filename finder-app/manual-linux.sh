@@ -34,14 +34,16 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     echo "Checking out version ${KERNEL_VERSION}"
     git checkout ${KERNEL_VERSION}
     # install packages needed for image make
+    echo "Installling packages needed for make ..."
     apt-get update &&  \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
     --no-install-recommends \
     ruby cmake git build-essential bsdmainutils valgrind wget
 
-    apt-get install -y --no-install-recommends \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
         bc u-boot-tools kmod cpio flex bison libssl-dev psmisc
-    apt-get install -y qemu-system-arm
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y qemu-system-arm
+    echo "Package installes finished"
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
     make -j$(nproc) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
