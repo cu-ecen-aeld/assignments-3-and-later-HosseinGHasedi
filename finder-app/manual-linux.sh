@@ -33,7 +33,16 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     cd linux-stable
     echo "Checking out version ${KERNEL_VERSION}"
     git checkout ${KERNEL_VERSION}
-    #make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
+    # install packages needed for image make
+    sudo apt-get update &&  \
+    DEBIAN_FRONTEND="noninteractive" sudo apt-get install -y \
+    --no-install-recommends \
+    ruby cmake git build-essential bsdmainutils valgrind sudo wget
+
+    sudo apt-get install -y --no-install-recommends \
+        bc u-boot-tools kmod cpio flex bison libssl-dev psmisc
+    sudo apt-get install -y qemu-system-arm
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
     make -j$(nproc) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
